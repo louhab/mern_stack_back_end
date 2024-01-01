@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors';
 import { db } from './config.js';
+import categoryRouter from './routes/categoryRoutes.js';
+import ProductRouter from './routes/productRoutes.js';
 
 const app = express();
 app.use(express.json());
@@ -14,3 +16,6 @@ mongoose.connect(db).then(()=>{
 }).catch((error)=>{
     console.log(error)
 })
+app.use('/categories' , categoryRouter )
+app.use('/products' , ProductRouter )
+
