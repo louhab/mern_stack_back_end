@@ -11,7 +11,7 @@ const seedProducts = [
         qty : 3,
         price : 300,
         image : 'https://cdn.pixabay.com/photo/2016/11/20/08/33/camera-1842202_1280.jpg',
-        category : '65927ed82a9f5f41a095fd5f'
+        category : '6592a0d697b09ac9ac40865a'
      },
      {
         name : 'samsung',
@@ -19,7 +19,7 @@ const seedProducts = [
         qty : 3,
         price : 300,
         image : 'https://cdn.pixabay.com/photo/2016/03/27/19/43/samsung-1283938_1280.jpg',
-        category : '65927ed82a9f5f41a095fd5f'  
+        category : '6592a0d697b09ac9ac40865a'  
      }
 ];
 
@@ -49,4 +49,44 @@ ProductRouter.get( '/' , async (req, res)=>{
     }
 });
 
+
+ProductRouter.get( '/:id' , async (req, res)=>{
+    try {
+        const {id} = req.params ;
+        if(!id.match(/^[0-9a-fA-F]{24}$/)){
+            return res.status(500).send({
+                message: 'the provided id is not valid '
+            })
+        }	
+        const product = await Product.findById(id)
+        return res.status(200).send(product)
+    }
+     catch (error) {
+         console.log(error);
+         return res.status(500).send({
+             message: error.message
+         })
+    }
+});
+
+ProductRouter.get( '/category/:id' , async (req, res)=>{
+    try {
+        const {id} = req.params ;
+        if(!id.match(/^[0-9a-fA-F]{24}$/)){
+            return res.status(500).send({
+                message: 'the provided id is not valid '
+            })
+        }	
+        const products = await Product.find({
+            category : id
+        })
+        return res.status(200).send(products)
+    }
+     catch (error) {
+         console.log(error);
+         return res.status(500).send({
+             message: error.message
+         })
+    }
+});
 export default ProductRouter;
